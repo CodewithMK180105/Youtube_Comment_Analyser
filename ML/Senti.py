@@ -8,7 +8,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from colorama import Fore, Style
 from typing import Dict
-import streamlit as st
 
 def extract_video_id(youtube_link):
     video_id_regex = r"^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu.be\/)([a-zA-Z0-9_-]{11})"
@@ -85,27 +84,18 @@ def is_spam(comment):
     uppercase_count = sum(1 for c in comment if c.isupper())
     return uppercase_count / len(comment) > 0.5 if comment else False  # Excessive capitalization
 
+# Senti.py (partial update)
 def bar_chart(positive_count, negative_count, neutral_count):
-    df = pd.DataFrame({
-        'Sentiment': ['Positive', 'Negative', 'Neutral'],
-        'Number of Comments': [positive_count, negative_count, neutral_count]
-    })
-    fig = px.bar(df, x='Sentiment', y='Number of Comments', color='Sentiment',
-                 color_discrete_sequence=['#87CEFA', '#FFA07A', '#D3D3D3'],
-                 title='Sentiment Analysis Results')
-    fig.update_layout(title_font=dict(size=20))
-    st.plotly_chart(fig, use_container_width=True)
+    return {
+        "sentiment": ["Positive", "Negative", "Neutral"],
+        "counts": [positive_count, negative_count, neutral_count]
+    }
 
 def plot_sentiment(positive_count, negative_count, neutral_count):
-    labels = ['Positive', 'Negative', 'Neutral']
-    values = [positive_count, negative_count, neutral_count]
-    colors = ['green', 'red', 'yellow']
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
-                                 marker=dict(colors=colors))])
-    fig.update_layout(title={'text': 'Sentiment Analysis Results', 'font': {'size': 20, 'family': 'Arial', 'color': 'grey'},
-                             'x': 0.5, 'y': 0.9},
-                      font=dict(size=14))
-    st.plotly_chart(fig)
+    return {
+        "labels": ["Positive", "Negative", "Neutral"],
+        "values": [positive_count, negative_count, neutral_count]
+    }
 
 def create_scatterplot(csv_file: str, x_column: str, y_column: str) -> None:
     data = pd.read_csv(csv_file)

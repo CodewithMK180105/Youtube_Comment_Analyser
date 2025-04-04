@@ -1,11 +1,10 @@
 "use client"
-
-import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { CommentList } from "@/components/comment-list"
 import { PieChart, BarChart, DonutChart } from "@/components/ui/chart"
 import Image from "next/image"
+import React from "react"
 
 interface AnalysisResultsProps {
   data: {
@@ -15,25 +14,27 @@ interface AnalysisResultsProps {
     commentData: {
       positive: { count: number; comments: string[] }
       negative: { count: number; comments: string[] }
+      neutral: { count: number; comments: string[] }
       questions: { count: number; comments: string[] }
       requests: { count: number; comments: string[] }
-      engagement: { count: number; comments: string[] }
       spam: { count: number; comments: string[] }
+      generic: { count: number; comments: string[] }
     }
   }
 }
 
 export function AnalysisResults({ data }: AnalysisResultsProps) {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = React.useState("overview")
 
   // Prepare chart data
   const chartData = [
     { name: "Positive", value: data.commentData.positive.count, color: "#22c55e" },
     { name: "Negative", value: data.commentData.negative.count, color: "#ef4444" },
+    { name: "Neutral", value: data.commentData.neutral.count, color: "#a3a3a3" },
     { name: "Questions", value: data.commentData.questions.count, color: "#3b82f6" },
     { name: "Requests", value: data.commentData.requests.count, color: "#a855f7" },
-    { name: "Engagement", value: data.commentData.engagement.count, color: "#eab308" },
     { name: "Spam", value: data.commentData.spam.count, color: "#f97316" },
+    { name: "Generic", value: data.commentData.generic.count, color: "#cbd5e1" },
   ]
 
   // Calculate total comments
@@ -81,7 +82,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
           </div>
         </CardContent>
       </Card>
-
       <Tabs defaultValue="overview" onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:w-auto">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -89,7 +89,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
           <TabsTrigger value="comments">Comments</TabsTrigger>
           <TabsTrigger value="insights">Insights</TabsTrigger>
         </TabsList>
-
         <TabsContent value="overview" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
@@ -109,7 +108,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               </div>
             </CardContent>
           </Card>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CommentList
               title="Positive Comments"
@@ -134,7 +132,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             />
           </div>
         </TabsContent>
-
         <TabsContent value="charts" className="mt-6">
           <Card>
             <CardHeader>
@@ -161,7 +158,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             </CardContent>
           </Card>
         </TabsContent>
-
         <TabsContent value="comments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CommentList
@@ -193,22 +189,21 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               comments={data.commentData.requests.comments}
             />
             <CommentList
-              title="Engagement"
-              icon="message-square"
-              color="text-yellow-500"
-              count={data.commentData.engagement.count}
-              comments={data.commentData.engagement.comments}
-            />
-            <CommentList
               title="Spam/Promotional"
               icon="alert-triangle"
               color="text-orange-500"
               count={data.commentData.spam.count}
               comments={data.commentData.spam.comments}
             />
+            <CommentList
+              title="Generic Comments"
+              icon="message-square"
+              color="text-gray-500"
+              count={data.commentData.generic.count}
+              comments={data.commentData.generic.comments}
+            />
           </div>
         </TabsContent>
-
         <TabsContent value="insights" className="mt-6">
           <Card>
             <CardHeader>
@@ -226,7 +221,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                     positive feedback.
                   </p>
                 </div>
-
                 <div className="p-4 border rounded-lg">
                   <h3 className="text-lg font-semibold mb-2">Engagement Quality</h3>
                   <p className="text-muted-foreground">
@@ -234,7 +228,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                     in your content. Consider addressing these questions in a follow-up video.
                   </p>
                 </div>
-
                 <div className="p-4 border rounded-lg">
                   <h3 className="text-lg font-semibold mb-2">Content Suggestions</h3>
                   <p className="text-muted-foreground">
@@ -242,7 +235,6 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                     explanations and related topics. Consider creating content that addresses these requests.
                   </p>
                 </div>
-
                 <div className="p-4 border rounded-lg">
                   <h3 className="text-lg font-semibold mb-2">Areas for Improvement</h3>
                   <p className="text-muted-foreground">
@@ -261,4 +253,3 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
     </div>
   )
 }
-
