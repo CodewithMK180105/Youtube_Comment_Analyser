@@ -12,12 +12,16 @@ interface CommentListProps {
 
 export function CommentList({ title, icon, color, count, comments = [] }: CommentListProps) {
   // Use provided comments or generate placeholders
-  const displayComments =
-    comments.length > 0
-      ? comments.slice(0, Math.min(count, 5))
-      : Array(Math.min(count, 5))
-          .fill("")
-          .map((_, i) => `Sample ${title.toLowerCase()} comment ${i + 1}`)
+  // const displayComments =
+  //   comments.length > 0
+  //     ? comments.slice(0, Math.min(count, 5))
+  //     : Array(Math.min(count, 5))
+  //         .fill("")
+  //         .map((_, i) => `Sample ${title.toLowerCase()} comment ${i + 1}`)
+
+  const displayComments = comments.length > 0 ? comments : []
+
+
 
   const getIcon = () => {
     switch (icon) {
