@@ -195,8 +195,14 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, Youtube } from "lucide-react"
 import { AnalysisResults } from "@/components/analysis-results"
+// import { auth } from "@clerk/nextjs/server";
 
 export function DashboardContent() {
+
+  // const { userId } =await auth();
+
+  // if (!userId) return null; // or handle edge case
+
   const [videoUrl, setVideoUrl] = useState("")
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [hasResults, setHasResults] = useState(false)
