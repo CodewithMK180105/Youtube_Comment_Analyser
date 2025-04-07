@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, BarChart, LineChart } from "@/components/ui/chart"
 import { ThumbsUp, ThumbsDown, HelpCircle, HandIcon as HandsPraying, MessageSquare, AlertTriangle } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 export function DemoSection() {
   const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
@@ -30,6 +31,15 @@ export function DemoSection() {
     { name: "Spam", value: commentData.spam, color: "#f97316" },
   ]
 
+  const { toast } = useToast();
+
+  const onAnalyse= ()=>{
+    toast({
+      title: "Demo Mode",
+      description: "This is just a demo of how the analysis would look.",
+    });
+  }
+
   return (
     <section id="demo" className="w-full py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
@@ -49,7 +59,7 @@ export function DemoSection() {
                 onChange={(e) => setVideoUrl(e.target.value)}
                 className="flex-1"
               />
-              <Button>Analyze</Button>
+              <Button onClick={()=>onAnalyse()}>Analyze</Button>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
