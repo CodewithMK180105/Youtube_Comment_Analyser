@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -14,22 +14,36 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  useUser
 } from '@clerk/nextjs'
+import { useToast } from "@/hooks/use-toast"
 
 
 export function Navbar() {
-
-
   const pathname = usePathname()
+  const router = useRouter()
+  const { isSignedIn } = useUser()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { toast } = useToast()
 
   const routes = [
     { href: "/", label: "Home", active: pathname === "/" },
     { href: "/#features", label: "Features", active: pathname === "/#features" },
     { href: "/#demo", label: "Demo", active: pathname === "/#demo" },
-    { href: "/dashboard", label: "Dashboard", active: pathname.startsWith("/dashboard") },
     { href: "/#contact", label: "Contact", active: pathname === "/#contact" },
   ]
+
+  const handleDashboardClick = () => {
+    if (isSignedIn) {
+      router.push("/dashboard")
+    } else {
+      toast({
+        title: "Authentication Required",
+        description: "You must be logged in to access the Dashboard.",
+        variant: "destructive",
+      })
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-md">
@@ -54,20 +68,17 @@ export function Navbar() {
               {route.label}
             </Link>
           ))}
+          <button
+            onClick={handleDashboardClick}
+            className="text-sm font-medium transition-colors text-foreground/60 hover:text-foreground/80"
+          >
+            Dashboard
+          </button>
         </nav>
 
         {/* Right Actions (Theme Toggle, Sign In/Up, Dashboard) */}
         <div className="hidden md:flex items-center space-x-4">
           <ThemeToggle />
-          {/* <Button asChild variant="ghost" size="sm">
-            <Link href="/login">Sign In</Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link href="/register">Sign Up</Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link href="/dashboard">Try Now</Link>
-          </Button> */}
           <SignedOut>
             <SignInButton />
             <SignUpButton />

@@ -1,35 +1,84 @@
-import Link from "next/link"
-import { Github, Twitter, Linkedin, Mail } from "lucide-react"
+"use client";
+import React from "react";
+import { FloatingDock } from "@/components/ui/floating-dock";
+import {
+  IconBrandGithub,
+  IconBrandX,
+  IconExchange,
+  IconHome,
+  IconNewSection,
+  IconTerminal2,
+} from "@tabler/icons-react";
+import Image from "next/image";
 
 export function Footer() {
-  return (
-    <footer className="border-t bg-background">
-      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
-        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} YouTube Comment Analyzer. All rights reserved.
-          </p>
-        </div>
-        <div className="flex gap-4">
-          <Link href="https://github.com" target="_blank" rel="noreferrer">
-            <Github className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">GitHub</span>
-          </Link>
-          <Link href="https://twitter.com" target="_blank" rel="noreferrer">
-            <Twitter className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">Twitter</span>
-          </Link>
-          <Link href="https://linkedin.com" target="_blank" rel="noreferrer">
-            <Linkedin className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">LinkedIn</span>
-          </Link>
-          <Link href="mailto:contact@example.com">
-            <Mail className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">Email</span>
-          </Link>
-        </div>
-      </div>
-    </footer>
-  )
-}
+  const links = [
+    {
+      title: "Home",
+      icon: (
+        <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
 
+    {
+      title: "Products",
+      icon: (
+        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Components",
+      icon: (
+        <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Aceternity UI",
+      icon: (
+        <Image
+          src="https://assets.aceternity.com/logo-dark.png"
+          width={20}
+          height={20}
+          alt="Aceternity Logo"
+        />
+      ),
+      href: "#",
+    },
+    {
+      title: "Changelog",
+      icon: (
+        <IconExchange className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+
+    {
+      title: "Twitter",
+      icon: (
+        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "GitHub",
+      icon: (
+        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+  ];
+  return (
+    <div className="flex flex-col items-center justify-center w-full py-6 bg-gray-100 dark:bg-gray-900 text-sm text-gray-600 dark:text-gray-400">
+      <FloatingDock
+        mobileClassName="translate-y-20" // only for demo, remove for production
+        items={links}
+      />
+      <p className="mt-4 text-center">
+        © {new Date().getFullYear()} Your Company Name. All rights reserved.
+      </p>
+    </div>
+  );
+}
